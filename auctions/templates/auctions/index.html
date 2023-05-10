@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div>
+        <a href="{% url 'categories' %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Search Category</a>
+        <a href="{% url 'watchlist' %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">My Watchlist</a>
+    </div>
+    <div class="d-flex flex-wrap">
+        
+        {% for listing in listings %}
+            {% if listing.status == True %}
+            <div class="card p-4 m-2 col-lg-3 col-md-4 col-sm-12">
+                <img src="{{listing.image}}">
+                <h4><a href= "{% url 'listing' listing.id %}"> {{ listing }}</a></h4>
+                {% if listing.bid_listing.last.price >= listing.starting_bid %}
+                    Current Bid: ${{listing.bid_listing.last.price}}
+                {% else %}
+                    Starting Bid: ${{ listing.starting_bid }}
+                {% endif %}
+            </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,12 @@
+body {
+    padding: 10px;
+}
+
+.card:hover {
+    background-color: grey
+    ;
+}
+
+.row{
+    border: 20px;
+}

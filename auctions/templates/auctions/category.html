@@ -1,0 +1,18 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    <h2>{{category}}</h2>
+    <div class="d-flex flex-wrap">
+        {% for list in listings%}
+            <div class="card p-4 m-2 col-lg-3 col-md-4 col-sm-12">
+                <img src="{{list.image}}">
+                <h4><a href= "{% url 'listing' list.id %}"> {{ list.title }}</a></h4>
+                {% if list.bid_listing.last.price > list.starting_bid %}
+                    Current Bid: ${{list.bid_listing.last.price}}
+                {% else %}
+                    Starting Bid: ${{ list.starting_bid }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

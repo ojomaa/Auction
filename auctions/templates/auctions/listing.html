@@ -1,0 +1,120 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+    <h1>{{listing.title}} 
+            {% if listing.status == True%}
+                <span class="badge badge-success">Open</span>
+            {% else %}
+            <span class="badge badge-danger">Closed</span>
+            {% endif %}
+    </h1>
+    <div>
+        <div>
+            <div class="row">
+                {% if listing.status == True %}
+                    {% if user.is_authenticated %}
+                        {% if watchlistStatus %}
+                            <form action="{% url 'remove_watchlist' listing.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-info"> - Watchlist</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'add_watchlist' listing.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-info"> + Watchlist</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                    {% if user == listing.user %}
+                        <form action="{% url 'close_listing' listing.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-info">Close Listing</button>
+                        </form> 
+                    {% endif %}
+                {% else %}
+                {% endif %}
+            </div>
+            <div class="card p-4 m-2 col-lg-3 col-md-4 col-sm-12">
+                <img src= "{{listing.image}}">
+                <div>
+                    <h6>Category: {{listing.category}}</h6>
+                </div>
+                <div>
+                    <h5>Description</h5>
+                    <p> {{listing.description}} </p>
+                </div>
+            </div>
+            <div class="card p-4 m-2 col-lg-3 col-md-4 col-sm-12">
+                <div>
+                    {% if listing.bid_listing.last.price >= listing.starting_bid %}
+                        Current Bid: ${{listing.bid_listing.last.price}}
+                    {% else %}
+                        Starting Bid: ${{ listing.starting_bid }}
+                    {% endif %}
+                </div>
+                <div>
+                    {% if listing.status == True %}
+                        <form action="{% url 'bid' listing.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" min="1" placeholder="bid price" name="price">
+                            <input type="submit">
+                        </form>
+                        {% if messages %}
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        This Listing is Closed
+                    {% endif %}
+                </div>
+                <div>
+                    End Time: {{listing.end_time}}
+                </div>
+                <div>
+                    {% if listing.status == False %}
+                        <div class="alert alert-success" role="alert">
+                            {{bid.last.user}} has won the auction!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card p-4 m-2 col-lg-3 col-md-4 col-sm-12">
+                <div>
+                    {% if user.is_authenticated %}
+                        <form action=" {% url 'comment' listing.id %}" method="POST">
+                            {% csrf_token %}
+                            <div>
+                                <label>Title:</label>
+                                <input type="text" name="title" placeholder="Comment Title">
+                            </div>
+                            <div>
+                                <label>Comments:</label>
+                                <textarea cols="36" rows="4" name="comment"></textarea>
+                                <input type="submit">
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="d-flex flex-wrap">
+                {% for com in comment %}
+                    <div class="card p-4 m-2 col-lg-3 col-md-4 col-sm-12">
+                        <div>
+                            <label>Title:</label>
+                            {{com.title}}
+                        </div>
+                        <div>
+                            <label>Description:</label>
+                            {{com.description}}
+                        </div>    
+                        <div>
+                            {{com.user}}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
