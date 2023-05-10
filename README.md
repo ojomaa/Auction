@@ -32,5 +32,5 @@ A step-by-step guide on how to install and run the project locally.
 - Use localhost to deploy the project and enjoy!
 
 ### Languages and Frameworks
-This Project uses the following languages: _Python_, _HTML_ and _CSS_
-This project uses the following framework in Python: _Django_
+- This Project uses the following languages: _Python_, _HTML_ and _CSS_
+- This project uses the following framework in Python: _Django_
