@@ -33,4 +33,4 @@ A step-by-step guide on how to install and run the project locally.
 
 ### Languages and Frameworks
 - This Project uses the following languages: _Python_, _HTML_ and _CSS_
-- This project uses the following framework in Python: _Django_
+- This project uses the following framework and database in Python: _Django_, _SQLite3_
